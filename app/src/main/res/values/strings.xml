@@ -1,0 +1,39 @@
+<resources>
+  <string name="app_name">StoryApp</string>
+
+  <string name="input_password">Input your password</string>
+  <string name="input_email">Input your email</string>
+
+  <string name="picture_logo">This StoryApp logo</string>
+  <string name="welcome">"Welcome !"</string>
+
+  <string name="invalid_username">Not a valid username</string>
+  <string name="invalid_email">Not a valid email</string>
+  <string name="invalid_password">Password must be >5 characters</string>
+  <string name="login_failed">"Login failed"</string>
+
+  <string name="sign">Email Not Valid</string>
+  <string name="sign_in">Sign In</string>
+  <string name="register">Register</string>
+  <string name="list_story">List Story</string>
+  <string name="add_story">Add Story</string>
+  <string name="logout">Log Out</string>
+
+  <string name="sign_in_with_your_account">Sign In with your account</string>
+  <string name="register_your_account">Register your account</string>
+  <string name="did_t_have_account"><u>Did\'t have account?</u></string>
+  <string name="have_account"><u>Have account?</u></string>
+
+  <string name="input_name">Input your name</string>
+  <string name="fill_all">Fill All The Field With Correctly</string>
+  <string name="title_activity_list_story">ListStoryActivity</string>
+
+  <string name="greeting">Halo %1$s,</string>
+  <string name="by_waffiq">By Waffiq 2022</string>
+  <string name="home_description">Post and share your story, show your activities, and get to know other people\'s stories</string>
+  <string name="login_acccount">Login your acccount</string>
+  <string name="continue_">Continue</string>
+  <string name="sign_in_success">Sign In Success</string>
+  <string name="log_out_success">Log Out Success</string>
+  <string name="information">Information</string>
+</resources>
