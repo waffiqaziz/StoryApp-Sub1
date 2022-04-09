@@ -35,7 +35,7 @@ class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
 
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
-    setBackgroundResource(R.drawable.border)
+    setBackgroundResource(R.drawable.border_corner)
     setTextColor(ContextCompat.getColor(context,R.color.black))
     textSize = 15f
     textAlignment = View.TEXT_ALIGNMENT_VIEW_START
@@ -52,16 +52,15 @@ class MyEditTextEmail : TextInputEditText, View.OnTouchListener {
       }
 
       override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+      }
+
+      override fun afterTextChanged(s: Editable) {
         if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
 
         if(!isEmailValid(s)) {
           showError()
         }
-
-      }
-
-      override fun afterTextChanged(s: Editable) {
-
       }
     })
   }

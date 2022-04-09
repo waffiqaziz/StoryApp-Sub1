@@ -6,13 +6,27 @@
         <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/bg_button.xml" value="0.1" />
         <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/bg_button_disable.xml" value="0.1325" />
         <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/border.xml" value="0.1325" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/border_corner_10.xml" value="0.3725" />
         <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/border_red.xml" value="0.1265" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/ic_broken_image.xml" value="0.1" />
         <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/ic_close.xml" value="0.1" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/ic_eye.xml" value="0.203" />
         <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/ic_group_5.xml" value="0.2165" />
         <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/ic_logo.xml" value="0.2165" />
-        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_register.xml" value="0.33" />
-        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_signin.xml" value="0.22" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/ic_place_holder.xml" value="0.113" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/ic_placeholder.xml" value="0.1" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/drawable/ic_setting.xml" value="0.133" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout-land/activity_main.xml" value="0.4984375" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout-land/activity_signin.xml" value="0.30207394048692515" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout-w936dp/item_row_story.xml" value="0.5578125" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout-w936dp/item_row_user.xml" value="0.67" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_add_story.xml" value="0.25" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_camera.xml" value="0.22" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_list_story.xml" value="0.1" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_register.xml" value="0.22" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_routing.xml" value="0.1573321932449765" />
+        <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/layout/activity_signin.xml" value="0.21875" />
         <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/pem/AndroidStudio/StoryApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2165" />
       </map>

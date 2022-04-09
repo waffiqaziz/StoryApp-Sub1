@@ -1,31 +1,27 @@
 package com.dicoding.storyapp.ui.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Patterns
+import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
-import com.dicoding.picodiploma.loginwithanimation.model.UserModel
-import com.dicoding.picodiploma.loginwithanimation.model.UserPreference
-import com.dicoding.storyapp.ui.viewmodel.RegisterViewModel
+import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R
-import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
 import com.dicoding.storyapp.databinding.ActivityRegisterBinding
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+import com.dicoding.storyapp.helper.ApiCallback
+import com.dicoding.storyapp.helper.ApiCallbackString
+import com.dicoding.storyapp.helper.isEmailValid
+import com.dicoding.storyapp.ui.viewmodel.RegisterViewModel
 
 class RegisterActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityRegisterBinding
-  private lateinit var registerViewModel: RegisterViewModel
+  private val registerViewModel by viewModels<RegisterViewModel>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -35,9 +31,8 @@ class RegisterActivity : AppCompatActivity() {
     setMyButtonEnable()
     editTextListener()
     buttonListener()
-    setupViewModel()
+    showLoading()
   }
-
 
   private fun editTextListener() {
     binding.etEmail.addTextChangedListener(object : TextWatcher {
@@ -77,43 +72,54 @@ class RegisterActivity : AppCompatActivity() {
           isEmailValid(binding.etEmail.text.toString())
   }
 
-  private fun setupViewModel() {
-    registerViewModel = ViewModelProvider(
-      this,
-      ViewModelFactory(UserPreference.getInstance(dataStore))
-    )[RegisterViewModel::class.java]
-  }
+  private fun buttonListener() {
+    binding.btnRegister.setOnClickListener {
+      val name = binding.etName.text.toString()
+      val email = binding.etEmail.text.toString()
+      val password = binding.etPass.text.toString()
 
-  private fun setupAction() {
-    val name = binding.etName.text.toString()
-    val email = binding.etEmail.text.toString()
-    val password = binding.etPass.text.toString()
-
-    registerViewModel.saveUser(UserModel(name, email, password, false))
-    AlertDialog.Builder(this).apply {
-      setTitle(getString(R.string.information))
-      setMessage("Your account has been created. You can Sign In with your current account.")
-      setPositiveButton("Sign In") { _, _ ->
-        startActivity(Intent(this@RegisterActivity, SignInActivity::class.java))
-        finish()
-      }
-      create()
-      show()
+      registerViewModel.register(name, email, password, object : ApiCallbackString {
+        override fun onResponse(success: Boolean, message: String) {
+          showAlertDialog(success, message)
+        }
+      })
     }
   }
 
-  private fun isEmailValid(email: CharSequence): Boolean {
-    return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+  private fun showAlertDialog(param: Boolean, message: String) {
+    if (param) {
+      AlertDialog.Builder(this).apply {
+        setTitle(getString(R.string.information))
+        setMessage(getString(R.string.register_success))
+        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+          val intent = Intent(context, SignInActivity::class.java)
+          intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+          startActivity(intent)
+          finish()
+        }
+        create()
+        show()
+      }
+    } else {
+      AlertDialog.Builder(this).apply {
+        setTitle(getString(R.string.information))
+        setMessage(getString(R.string.register_failed)+", $message")
+        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+          binding.progressBar.visibility = View.GONE
+        }
+        create()
+        show()
+
+      }
+    }
   }
 
-  private fun buttonListener() {
-    binding.btnRegister.setOnClickListener {
-      setupAction()
-      Toast.makeText(
-        this@RegisterActivity,
-        "${binding.etEmail.text} \n ${binding.etPass.text}",
-        Toast.LENGTH_SHORT
-      ).show()
+  private fun showLoading() {
+    registerViewModel.isLoading.observe(this) {
+      binding.apply {
+        if (it) progressBar.visibility = View.VISIBLE
+        else progressBar.visibility = View.GONE
+      }
     }
   }
 }

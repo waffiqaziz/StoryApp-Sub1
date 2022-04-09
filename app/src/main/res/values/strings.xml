@@ -34,6 +34,21 @@
   <string name="login_acccount">Login your acccount</string>
   <string name="continue_">Continue</string>
   <string name="sign_in_success">Sign In Success</string>
+  <string name="register_success">Register Success, You can Sign In with your account</string>
+  <string name="register_failed">Register Failed</string>
+  <string name="sign_in_failed">Sign In Failed</string>
   <string name="log_out_success">Log Out Success</string>
   <string name="information">Information</string>
+
+  <string name="camera">Camera</string>
+  <string name="description">Description</string>
+  <string name="gallery">Gallery</string>
+  <string name="upload">Upload</string>
+  <string name="change_language">Change language</string>
+  <string name="new_story">New Story</string>
+  <string name="image_preview">Image preview</string>
+
+  <string name="image_story">Image story</string>
+  <string name="name">Name</string>
+
 </resources>

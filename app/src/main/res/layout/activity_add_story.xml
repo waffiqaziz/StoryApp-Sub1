@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ui.activity.AddStoryActivity">
+
+
+  <androidx.appcompat.widget.Toolbar
+    android:id="@+id/my_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:elevation="4dp"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    app:theme="@style/AppTheme.ToolbarFont"
+    app:title="@string/new_story"
+    app:titleTextColor="@color/white" />
+
+
+  <Button
+    android:id="@+id/btn_camera_x"
+    style="@style/BtnRegular"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="60dp"
+    android:layout_marginEnd="8dp"
+    android:elevation="2dp"
+    android:scaleType="fitCenter"
+    android:text="@string/camera"
+    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+  <Button
+    android:id="@+id/btn_gallery"
+    style="@style/BtnRegular"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="60dp"
+    android:text="@string/gallery"
+    app:layout_constraintBottom_toBottomOf="@+id/btn_camera_x"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/guideline3" />
+
+  <Button
+    android:id="@+id/btn_upload"
+    style="@style/BtnRegular"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="60dp"
+    android:layout_marginEnd="60dp"
+    android:layout_marginBottom="32dp"
+    android:text="@string/upload"
+    app:layout_constraintBottom_toTopOf="@+id/guideline6"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent" />
+
+  <ImageView
+    android:id="@+id/iv_preview"
+    android:layout_width="match_parent"
+    android:layout_height="380dp"
+    android:layout_marginTop="21dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+    app:srcCompat="@drawable/ic_place_holder"
+    android:contentDescription="@string/image_preview" />
+
+  <EditText
+    android:id="@+id/et"
+    style="@style/EditTextGeneral"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="60dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginEnd="60dp"
+    android:background="@drawable/border_corner_10"
+    android:hint="@string/description"
+    android:inputType="textMultiLine"
+    android:maxLines="5"
+    android:minLines="9"
+    android:padding="10dp"
+    android:scrollbars="vertical"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_camera_x"
+    android:autofillHints="Your description" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="203dp" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline4"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="439dp" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline6"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="819dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

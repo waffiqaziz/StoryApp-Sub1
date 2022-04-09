@@ -5,6 +5,8 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -14,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText
 
 class MyEditTextPass : TextInputEditText, View.OnTouchListener {
 
-  private lateinit var clearButton: Drawable
+  private lateinit var eyeIcon: Drawable
 
   constructor(context: Context) : super(context) {
     init()
@@ -34,14 +36,15 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
 
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
-    setBackgroundResource(R.drawable.border)
+    showEyeButton()
+    setBackgroundResource(R.drawable.border_corner)
     setTextColor(ContextCompat.getColor(context, R.color.black))
     textSize = 15f
     textAlignment = View.TEXT_ALIGNMENT_VIEW_START
   }
 
   private fun init() {
-    clearButton = ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable // x button
+    eyeIcon = ContextCompat.getDrawable(context, R.drawable.ic_eye_off) as Drawable // x button
 
     setOnTouchListener(this)
 
@@ -51,27 +54,25 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
       }
 
       override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
-
-        // check input
-        if (s.toString().length < 6) showError()
+        // Do nothing.
       }
 
       override fun afterTextChanged(s: Editable) {
-        // Do nothing.
+        // check input
+        if (s.toString().length < 6) showError()
       }
     })
   }
 
-  private fun showError(){
+  private fun showError() {
     error = context.getString(R.string.invalid_password)
   }
 
-  private fun showClearButton() {
-    setButtonDrawables(endOfTheText = clearButton)
+  private fun showEyeButton() {
+    setButtonDrawables(endOfTheText = eyeIcon)
   }
 
-  private fun hideClearButton() {
+  private fun hideEyeButton() {
     setButtonDrawables()
   }
 
@@ -91,29 +92,31 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
 
   override fun onTouch(v: View?, event: MotionEvent): Boolean {
     if (compoundDrawables[2] != null) {
-      val clearButtonStart: Float
-      val clearButtonEnd: Float
-      var isClearButtonClicked = false
+      val eyeButtonStart: Float
+      val eyeButtonEnd: Float
+      var isEyeButtonClicked = false
 
       if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
-        clearButtonEnd = (clearButton.intrinsicWidth + paddingStart).toFloat()
-        if (event.x < clearButtonEnd) isClearButtonClicked = true
+        eyeButtonEnd = (eyeIcon.intrinsicWidth + paddingStart).toFloat()
+        if (event.x < eyeButtonEnd) isEyeButtonClicked = true
       } else {
-        clearButtonStart = (width - paddingEnd - clearButton.intrinsicWidth).toFloat()
-        if (event.x > clearButtonStart) isClearButtonClicked = true
+        eyeButtonStart = (width - paddingEnd - eyeIcon.intrinsicWidth).toFloat()
+        if (event.x > eyeButtonStart) isEyeButtonClicked = true
       }
 
-      if (isClearButtonClicked) {
+      if (isEyeButtonClicked) {
         return when (event.action) {
           MotionEvent.ACTION_DOWN -> {
-            clearButton = ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable
-            showClearButton() // show button x
-            true
-          }
-          MotionEvent.ACTION_UP -> {
-            clearButton = ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable
-            if (text != null) text?.clear() // clear text
-            hideClearButton()  // hide button x
+            hideEyeButton()
+            if (transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
+              transformationMethod = PasswordTransformationMethod.getInstance() // hide password
+              eyeIcon = ContextCompat.getDrawable(context, R.drawable.ic_eye_off) as Drawable
+              showEyeButton()
+            } else {
+              transformationMethod = HideReturnsTransformationMethod.getInstance() // show password
+              eyeIcon = ContextCompat.getDrawable(context, R.drawable.ic_eye) as Drawable
+              showEyeButton()
+            }
             true
           }
           else -> false
