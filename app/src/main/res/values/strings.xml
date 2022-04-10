@@ -29,13 +29,16 @@
   <string name="title_activity_list_story">ListStoryActivity</string>
 
   <string name="greeting">Halo %1$s,</string>
+  <string name="created_add">Created at %1$s,</string>
   <string name="by_waffiq">By Waffiq 2022</string>
-  <string name="home_description">Post and share your story, show your activities, and get to know other people\'s stories</string>
-  <string name="login_acccount">Login your acccount</string>
+  <string name="home_description">Post and share your story, share your activities, and get to know other people\'s stories</string>
+  <string name="login_account">Login your account</string>
   <string name="continue_">Continue</string>
   <string name="sign_in_success">Sign In Success</string>
   <string name="register_success">Register Success, You can Sign In with your account</string>
   <string name="register_failed">Register Failed</string>
+  <string name="upload_failed">Upload Failed</string>
+  <string name="upload_success">Upload Success</string>
   <string name="sign_in_failed">Sign In Failed</string>
   <string name="log_out_success">Log Out Success</string>
   <string name="information">Information</string>
@@ -50,5 +53,10 @@
 
   <string name="image_story">Image story</string>
   <string name="name">Name</string>
+  <string name="no_story">No Story</string>
+  <string name="post_story">Post story</string>
+  <string name="invalid_permission">Cant get permission</string>
+  <string name="no_attach_file">No file attached, please attach image first</string>
+  <string name="rotate_image">Rotate image</string>
 
 </resources>

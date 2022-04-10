@@ -1,75 +1,66 @@
 package com.dicoding.storyapp.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.model.UserModel
-import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.databinding.ActivityListStoryBinding
-import com.dicoding.storyapp.helper.showToast
 import com.dicoding.storyapp.ui.adapter.StoryAdapter
 import com.dicoding.storyapp.ui.viewmodel.ListStoryViewModel
 import com.google.android.material.snackbar.Snackbar
 
+
 class ListStoryActivity : AppCompatActivity() {
 
-  private lateinit var binding: ActivityListStoryBinding
+  private var _binding: ActivityListStoryBinding? = null
+  private val binding get() = _binding
+
   private lateinit var user: UserModel
+  private lateinit var adapter: StoryAdapter
 
   private val viewModel by viewModels<ListStoryViewModel>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = ActivityListStoryBinding.inflate(layoutInflater)
-    setContentView(binding.root)
+    _binding = ActivityListStoryBinding.inflate(layoutInflater)
+    setContentView(binding?.root)
+
+    setupToolbar()
+    addStoryAction()
 
     user = intent.getParcelableExtra(EXTRA_USER)!!
-
-    viewModel.itemStory.observe(this) {
-      setListStory(it)
-    }
-
     viewModel.showListStory(user.token)
 
-    viewModel.isLoading.observe(this) {
-      showLoading(it)
-    }
+    setListStory()
+    adapter = StoryAdapter()
+
     showSnackBar()
+
+    binding?.rvStory?.layoutManager = LinearLayoutManager(this)
+    binding?.rvStory?.setHasFixedSize(true)
+    binding?.rvStory?.adapter = adapter
+
+    showLoading()
   }
 
-  private fun setListStory(itemStory: List<ListStoryItem>) {
-    val listStory = ArrayList<ListStoryItem>()
-    for (story in itemStory) {
-      val dataStory = ListStoryItem(
-        story.photoUrl,
-        story.createdAt,
-        story.name,
-        story.description,
-        story.lon,
-        story.id,
-        story.lat,
-      )
-      listStory.add(dataStory)
-    }
-
-    val adapter =
-      StoryAdapter(listStory, object : StoryAdapter.OnItemClickCallback {
-        override fun onItemClicked(data: ListStoryItem) {
-//          val moveUserDetail = Intent(this@ListStoryActivity, DetailUserActivity::class.java)
-//          moveUserDetail.putExtra(DetailUserActivity.EXTRA_USER, data)
-//
-//          // goto DetailActivity with an animation(explode)
-//          startActivity(moveUserDetail, ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity,).toBundle())
-
-          showToast(this@ListStoryActivity,"belum bisa")
-        }
-      })
-    binding.rvStory.adapter = adapter
+  private fun setupToolbar(){
+    setSupportActionBar(binding?.toolbar)
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    supportActionBar?.setDisplayShowHomeEnabled(true)
   }
 
-  private fun showSnackBar(){
+  override fun onSupportNavigateUp(): Boolean {
+    startActivity(Intent(this, MainActivity::class.java))
+    finish()
+    return true
+  }
+
+  private fun showSnackBar() {
     viewModel.snackBarText.observe(this) {
       it.getContentIfNotHandled()?.let { snackBarText ->
         Snackbar.make(
@@ -81,13 +72,41 @@ class ListStoryActivity : AppCompatActivity() {
     }
   }
 
-  private fun showLoading(isLoading: Boolean) {
-    binding.apply {
-      if (isLoading) {
-        progressBar.visibility = View.VISIBLE
-      } else {
-        progressBar.visibility = View.GONE
+  private fun showLoading() {
+    viewModel.isLoading.observe(this) {
+      binding?.apply {
+        if (it) {
+          progressBar.visibility = View.VISIBLE
+          rvStory.visibility = View.INVISIBLE
+        } else {
+          progressBar.visibility = View.GONE
+          rvStory.visibility = View.VISIBLE
+        }
       }
+    }
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    _binding = null
+  }
+
+  private fun setListStory() {
+    viewModel.itemStory.observe(this) {
+      adapter.setListStory(it)
+    }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    setListStory()
+  }
+
+  private fun addStoryAction(){
+    binding?.ivAddStory?.setOnClickListener {
+      val moveToAddStoryActivity = Intent(this, AddStoryActivity::class.java)
+      moveToAddStoryActivity.putExtra(AddStoryActivity.EXTRA_USER, user)
+      startActivity(moveToAddStoryActivity)
     }
   }
 

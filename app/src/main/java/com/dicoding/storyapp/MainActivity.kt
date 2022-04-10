@@ -15,14 +15,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivityMainBinding
-import com.dicoding.storyapp.helper.showToast
-import com.dicoding.storyapp.ui.activity.AddStoryActivity
 import com.dicoding.storyapp.ui.activity.ListStoryActivity
 import com.dicoding.storyapp.ui.activity.SignInActivity
 import com.dicoding.storyapp.ui.viewmodel.MainViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
 class MainActivity : AppCompatActivity() {
   private lateinit var user: UserModel
@@ -55,8 +53,7 @@ class MainActivity : AppCompatActivity() {
         it.token,
         true
       )
-      binding.nameTextView.text = getString(R.string.greeting, it.name)
-      showToast(this, user.token)
+      binding.nameTextView.text = getString(R.string.greeting, user.name)
     }
   }
 
@@ -93,10 +90,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun buttonListener() {
-    binding.btnAddStory.setOnClickListener {
-      startActivity(Intent(this, AddStoryActivity::class.java))
-    }
-
     binding.btnLisStory.setOnClickListener {
       val moveToListStoryActivity = Intent(this@MainActivity, ListStoryActivity::class.java)
       moveToListStoryActivity.putExtra(ListStoryActivity.EXTRA_USER, user)

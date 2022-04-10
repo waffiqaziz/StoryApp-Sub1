@@ -25,7 +25,10 @@ class ListStoryViewModel : ViewModel() {
   fun showListStory(token: String) {
     _isLoading.value = true
 
-    val client = ApiConfig.getApiService().getAllStories(token)
+    val client = ApiConfig
+      .getApiService()
+      .getAllStories("Bearer $token")
+
     client.enqueue(object : Callback<AllStoriesResponse> {
       override fun onResponse(
         call: Call<AllStoriesResponse>,
@@ -36,27 +39,24 @@ class ListStoryViewModel : ViewModel() {
           val responseBody = response.body()
           if (responseBody != null) {
             if (!responseBody.error) {
-              _snackBarText.value = Event(NO_STORY)
+              _itemStory.value = response.body()?.listStory
             }
-            _itemStory.value = response.body()?.listStory
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
-          _snackBarText.value = Event(FAILED)
+          _snackBarText.value = Event(response.message())
         }
       }
 
       override fun onFailure(call: Call<AllStoriesResponse>, t: Throwable) {
         _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackBarText.value = Event(FAILED)
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
 
   companion object {
     private const val TAG = "ListStoryViewModel"
-    private const val FAILED = "Connection Failed"
-    private const val NO_STORY = "Story Not Found"
   }
 }

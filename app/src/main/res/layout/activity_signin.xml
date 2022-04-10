@@ -74,7 +74,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
-      android:contentDescription="@string/login_acccount" />
+      android:contentDescription="@string/login_account" />
 
     <TextView
       android:id="@+id/et_signIn"

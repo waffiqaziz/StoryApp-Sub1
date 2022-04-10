@@ -7,32 +7,33 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.dicoding.storyapp.data.remote.response.ApiResponse
-import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
+import com.dicoding.storyapp.R
+import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityAddStoryBinding
-import com.dicoding.storyapp.helper.rotateBitmap
-import com.dicoding.storyapp.helper.showToast
-import com.dicoding.storyapp.helper.uriToFile
-import okhttp3.MediaType.Companion.toMediaType
+import com.dicoding.storyapp.helper.*
+import com.dicoding.storyapp.ui.viewmodel.AddStoryViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 
 
 class AddStoryActivity : AppCompatActivity() {
   private lateinit var binding: ActivityAddStoryBinding
+
+  private lateinit var user: UserModel
+  private var getFile: File? = null
+  private var result: Bitmap? = null
+
+  private val viewModel by viewModels<AddStoryViewModel>()
 
   override fun onRequestPermissionsResult(
     requestCode: Int,
@@ -44,7 +45,7 @@ class AddStoryActivity : AppCompatActivity() {
       if (!allPermissionsGranted()) {
         Toast.makeText(
           this,
-          "Tidak mendapatkan permission.",
+          getString(R.string.invalid_permission),
           Toast.LENGTH_SHORT
         ).show()
         finish()
@@ -62,6 +63,19 @@ class AddStoryActivity : AppCompatActivity() {
     setContentView(binding.root)
     setupToolbar()
 
+    user = intent.getParcelableExtra(EXTRA_USER)!!
+
+    getPermission()
+
+    binding.btnCameraX.setOnClickListener { startCameraX() }
+    binding.btnGallery.setOnClickListener { startGallery() }
+    binding.btnUpload.setOnClickListener { uploadImage() }
+    binding.ivRotate.setOnClickListener { rotateImage() }
+
+    showLoading()
+  }
+
+  private fun getPermission() {
     if (!allPermissionsGranted()) {
       ActivityCompat.requestPermissions(
         this,
@@ -69,13 +83,9 @@ class AddStoryActivity : AppCompatActivity() {
         REQUEST_CODE_PERMISSIONS
       )
     }
-
-    binding.btnCameraX.setOnClickListener { startCameraX() }
-    binding.btnGallery.setOnClickListener { startGallery() }
-    binding.btnUpload.setOnClickListener { uploadImage() }
   }
 
-  private fun setupToolbar(){
+  private fun setupToolbar() {
     setSupportActionBar(binding.myToolbar)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     supportActionBar?.setHomeButtonEnabled(true)
@@ -91,7 +101,6 @@ class AddStoryActivity : AppCompatActivity() {
     launcherIntentCameraX.launch(Intent(this, CameraActivity::class.java))
   }
 
-  private var getFile: File? = null
   private val launcherIntentCameraX = registerForActivityResult(
     ActivityResultContracts.StartActivityForResult()
   ) {
@@ -99,22 +108,21 @@ class AddStoryActivity : AppCompatActivity() {
       val myFile = it.data?.getSerializableExtra("picture") as File
       val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
 
-      // rotate
-//      val result = rotateBitmap(
-//        BitmapFactory.decodeFile(myFile.path),
-//        isBackCamera
-//      )
-
       getFile = myFile
-      val result = rotateBitmap(
-        BitmapFactory.decodeFile(getFile?.path),
-        isBackCamera
-      )
-
-      binding.ivPreview.setImageBitmap(result)
+      result =
+        rotateBitmap(
+          BitmapFactory.decodeFile(getFile?.path),
+          isBackCamera
+        )
     }
+    binding.ivPreview.setImageBitmap(result)
   }
 
+  private fun rotateImage() {
+    result = rotateBitmap(result!!)
+
+    binding.ivPreview.setImageBitmap(result)
+  }
 
   private fun startGallery() {
     val intent = Intent()
@@ -136,61 +144,72 @@ class AddStoryActivity : AppCompatActivity() {
   }
 
   private fun uploadImage() {
+
     if (getFile != null) {
       val file = reduceFileImage(getFile as File)
 
-//      val description = "Ini adalah deksripsi gambar".toRequestBody("text/plain".toMediaType())
-      val description = "Ini adalah deksripsi gambar"
+      val description = binding.etDescription.text.toString()
       val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-      val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+      val imageMultipart = MultipartBody.Part.createFormData(
         "photo",
         file.name,
         requestImageFile
       )
 
-      val service = ApiConfig().getApiService().addStories(description, imageMultipart,"token")
-      service.enqueue(object : Callback<ApiResponse> {
-        override fun onResponse(
-          call: Call<ApiResponse>,
-          response: Response<ApiResponse>
-        ) {
-          if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null && !responseBody.error) {
-              showToast(this@AddStoryActivity, responseBody.message)
-            }
-          } else {
-            showToast(this@AddStoryActivity, response.message())
-          }
-        }
-        override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-          showToast(this@AddStoryActivity, "Gagal instance Retrofit")
+      // upload image
+      viewModel.uploadImage(user, description, imageMultipart, object : ApiCallbackString {
+        override fun onResponse(success: Boolean, message: String) {
+          showAlertDialog(success, message)
         }
       })
 
     } else {
-      showToast(this@AddStoryActivity, "Silakan masukkan berkas gambar terlebih dahulu.")
+      showToast(this@AddStoryActivity, getString(R.string.no_attach_file))
     }
   }
 
-  // reduce image size
-  private fun reduceFileImage(file: File): File {
-    val bitmap = BitmapFactory.decodeFile(file.path)
-    var compressQuality = 100
-    var streamLength: Int
-    do {
-      val bmpStream = ByteArrayOutputStream()
-      bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
-      val bmpPicByteArray = bmpStream.toByteArray()
-      streamLength = bmpPicByteArray.size
-      compressQuality -= 5
-    } while (streamLength > 1000000)
-    bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
-    return file
+  private fun showAlertDialog(param: Boolean, message: String) {
+    if (param) {
+      AlertDialog.Builder(this).apply {
+        setTitle(getString(R.string.information))
+        setMessage(getString(R.string.upload_success))
+        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+          val intent = Intent(context, ListStoryActivity::class.java)
+          intent.putExtra(EXTRA_USER, user)
+          intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+          startActivity(intent)
+          finish()
+        }
+        create()
+        show()
+      }
+    } else {
+      AlertDialog.Builder(this).apply {
+        setTitle(getString(R.string.information))
+        setMessage(getString(R.string.upload_failed) + ", $message")
+        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+          binding.progressBar.visibility = View.GONE
+        }
+        create()
+        show()
+      }
+    }
   }
+
+  private fun showLoading() {
+    viewModel.isLoading.observe(this) {
+      binding.apply {
+        if (it) progressBar.visibility = View.VISIBLE
+        else progressBar.visibility = View.GONE
+      }
+    }
+  }
+
 
   companion object {
     const val CAMERA_X_RESULT = 200
+
+    const val EXTRA_USER = "user"
 
     private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     private const val REQUEST_CODE_PERMISSIONS = 10

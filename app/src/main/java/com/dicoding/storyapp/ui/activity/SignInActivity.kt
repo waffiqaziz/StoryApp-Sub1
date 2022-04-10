@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +16,6 @@ import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivitySigninBinding
-import com.dicoding.storyapp.helper.ApiCallback
 import com.dicoding.storyapp.helper.ApiCallbackString
 import com.dicoding.storyapp.helper.isEmailValid
 import com.dicoding.storyapp.ui.viewmodel.SignInViewModel

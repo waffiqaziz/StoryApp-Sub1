@@ -3,19 +3,19 @@ package com.dicoding.storyapp.helper
 import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
 import android.util.Patterns
 import android.widget.Toast
 import com.dicoding.storyapp.R
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 private const val FILENAME_FORMAT = "dd-MMM-yyyy"
 
@@ -86,6 +86,21 @@ fun uriToFile(selectedImg: Uri, context: Context): File {
   return myFile
 }
 
+fun reduceFileImage(file: File): File {
+  val bitmap = BitmapFactory.decodeFile(file.path)
+  var compressQuality = 100
+  var streamLength: Int
+  do {
+    val bmpStream = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+    val bmpPicByteArray = bmpStream.toByteArray()
+    streamLength = bmpPicByteArray.size
+    compressQuality -= 5
+  } while (streamLength > 1000000)
+  bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+  return file
+}
+
 fun showToast(context: Context, text : String){
   Toast.makeText(
     context,
@@ -98,9 +113,6 @@ fun isEmailValid(email: CharSequence): Boolean {
   return Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
 
-interface ApiCallback {
-  fun onResponse(success: Boolean)
-}
 interface ApiCallbackString {
   fun onResponse(success: Boolean, message: String)
 }
