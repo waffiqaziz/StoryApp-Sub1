@@ -35,7 +35,6 @@ class MyEditTextName : TextInputEditText, View.OnTouchListener {
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
     setBackgroundResource(R.drawable.border_corner)
-    setTextColor(ContextCompat.getColor(context, R.color.black))
     textSize = 15f
     textAlignment = View.TEXT_ALIGNMENT_VIEW_START
   }
@@ -64,7 +63,7 @@ class MyEditTextName : TextInputEditText, View.OnTouchListener {
   }
 
   private fun showError() {
-    error = "Must be filled"
+    error = context.getString(R.string.must_filled)
   }
 
   private fun showClearButton() {

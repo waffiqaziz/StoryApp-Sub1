@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     setContentView(binding.root)
 
     setupViewModel()
-    setupAction()
     playAnimation()
     buttonListener()
   }
@@ -57,23 +57,8 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  private fun setupAction() {
-    binding.btnLogOut.setOnClickListener {
-      mainViewModel.logout()
-      AlertDialog.Builder(this).apply {
-        setTitle(getString(R.string.information))
-        setMessage(getString(R.string.log_out_success))
-        setPositiveButton(getString(R.string.continue_)) { _, _ ->
-          startActivity(Intent(this@MainActivity, SignInActivity::class.java))
-        }
-        create()
-        show()
-      }
-    }
-  }
-
   private fun playAnimation() {
-    ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
+    ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -38f, 38f).apply {
       duration = 6000
       repeatCount = ObjectAnimator.INFINITE
       repeatMode = ObjectAnimator.REVERSE
@@ -94,6 +79,22 @@ class MainActivity : AppCompatActivity() {
       val moveToListStoryActivity = Intent(this@MainActivity, ListStoryActivity::class.java)
       moveToListStoryActivity.putExtra(ListStoryActivity.EXTRA_USER, user)
       startActivity(moveToListStoryActivity)
+    }
+    binding.ivSetting?.setOnClickListener {
+      startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+    }
+    binding.btnLogOut.setOnClickListener {
+      mainViewModel.logout()
+      AlertDialog.Builder(this).apply {
+        setTitle(getString(R.string.information))
+        setMessage(getString(R.string.log_out_success))
+        setPositiveButton(getString(R.string.continue_)) { _, _ ->
+          startActivity(Intent(this@MainActivity, SignInActivity::class.java))
+          finish()
+        }
+        create()
+        show()
+      }
     }
   }
 }

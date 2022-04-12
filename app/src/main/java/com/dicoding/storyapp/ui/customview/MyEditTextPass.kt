@@ -38,7 +38,6 @@ class MyEditTextPass : TextInputEditText, View.OnTouchListener {
     super.onDraw(canvas)
     showEyeButton()
     setBackgroundResource(R.drawable.border_corner)
-    setTextColor(ContextCompat.getColor(context, R.color.black))
     textSize = 15f
     textAlignment = View.TEXT_ALIGNMENT_VIEW_START
   }

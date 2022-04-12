@@ -9,6 +9,15 @@
   android:paddingEnd="40dp"
   tools:context=".ui.activity.SignInActivity">
 
+  <ImageView
+    android:id="@+id/iv_setting"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_alignParentEnd="true"
+    android:layout_marginTop="16dp"
+    android:contentDescription="@string/change_language"
+    android:src="@drawable/ic_setting" />
+
   <ProgressBar
     android:id="@+id/progress_bar"
     style="?android:attr/progressBarStyle"
@@ -39,7 +48,6 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="50dp"
       android:text="@string/sign_in_with_your_account"
-      android:textColor="@color/black"
       android:textSize="30sp" />
 
     <com.dicoding.storyapp.ui.customview.MyEditTextEmail

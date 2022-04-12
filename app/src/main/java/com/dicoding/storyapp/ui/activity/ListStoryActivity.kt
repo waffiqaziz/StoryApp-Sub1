@@ -6,7 +6,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.databinding.ActivityListStoryBinding
@@ -34,7 +33,6 @@ class ListStoryActivity : AppCompatActivity() {
     addStoryAction()
 
     user = intent.getParcelableExtra(EXTRA_USER)!!
-    viewModel.showListStory(user.token)
 
     setListStory()
     adapter = StoryAdapter()
@@ -46,6 +44,7 @@ class ListStoryActivity : AppCompatActivity() {
     binding?.rvStory?.adapter = adapter
 
     showLoading()
+    showHaveDataOrNot()
   }
 
   private fun setupToolbar(){
@@ -55,8 +54,7 @@ class ListStoryActivity : AppCompatActivity() {
   }
 
   override fun onSupportNavigateUp(): Boolean {
-    startActivity(Intent(this, MainActivity::class.java))
-    finish()
+    onBackPressed()
     return true
   }
 
@@ -86,12 +84,25 @@ class ListStoryActivity : AppCompatActivity() {
     }
   }
 
+  private fun showHaveDataOrNot(){
+    viewModel.isHaveData.observe(this){
+      binding?.apply {
+        if (it) {
+          tvInfo.visibility = View.GONE
+        } else {
+          tvInfo.visibility = View.VISIBLE
+        }
+      }
+    }
+  }
+
   override fun onDestroy() {
     super.onDestroy()
     _binding = null
   }
 
   private fun setListStory() {
+    viewModel.showListStory(user.token)
     viewModel.itemStory.observe(this) {
       adapter.setListStory(it)
     }

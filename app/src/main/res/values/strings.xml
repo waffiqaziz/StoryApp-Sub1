@@ -26,9 +26,8 @@
 
   <string name="input_name">Input your name</string>
   <string name="fill_all">Fill All The Field With Correctly</string>
-  <string name="title_activity_list_story">ListStoryActivity</string>
 
-  <string name="greeting">Halo %1$s,</string>
+  <string name="greeting">Hi %1$s,</string>
   <string name="created_add">Created at %1$s,</string>
   <string name="by_waffiq">By Waffiq 2022</string>
   <string name="home_description">Post and share your story, share your activities, and get to know other people\'s stories</string>
@@ -55,8 +54,12 @@
   <string name="name">Name</string>
   <string name="no_story">No Story</string>
   <string name="post_story">Post story</string>
-  <string name="invalid_permission">Cant get permission</string>
+  <string name="invalid_permission">Can\'t get permission</string>
   <string name="no_attach_file">No file attached, please attach image first</string>
   <string name="rotate_image">Rotate image</string>
 
+  <string name="detail_story">Detail Story</string>
+  <string name="switch_camera">Switch Camera</string>
+  <string name="capture_image">Capture image</string>
+  <string name="must_filled">Must be filled</string>
 </resources>

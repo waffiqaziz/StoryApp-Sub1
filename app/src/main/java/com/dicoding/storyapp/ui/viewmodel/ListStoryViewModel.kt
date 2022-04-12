@@ -19,12 +19,15 @@ class ListStoryViewModel : ViewModel() {
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
 
+  private val _isHaveData = MutableLiveData<Boolean>()
+  val isHaveData: LiveData<Boolean> = _isHaveData
+
   private val _snackBarText = MutableLiveData<Event<String>>()
   val snackBarText: LiveData<Event<String>> = _snackBarText
 
   fun showListStory(token: String) {
     _isLoading.value = true
-
+    _isHaveData.value = true
     val client = ApiConfig
       .getApiService()
       .getAllStories("Bearer $token")
@@ -40,6 +43,7 @@ class ListStoryViewModel : ViewModel() {
           if (responseBody != null) {
             if (!responseBody.error) {
               _itemStory.value = response.body()?.listStory
+              _isHaveData.value = responseBody.message == "Stories fetched successfully"
             }
           }
         } else {

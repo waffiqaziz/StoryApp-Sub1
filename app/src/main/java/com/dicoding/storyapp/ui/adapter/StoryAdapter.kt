@@ -3,7 +3,6 @@ package com.dicoding.storyapp.ui.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -43,13 +42,13 @@ class StoryAdapter: RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
       with(binding) {
         Glide.with(imgItemImage)
           .load(story.photoUrl) // URL Avatar
-          .placeholder(R.drawable.ic_placeholder)
+          .placeholder(R.drawable.ic_place_holder)
           .error(R.drawable.ic_broken_image)
           .into(imgItemImage)
         tvName.text = story.name
         tvDescription.text = story.description
         tvCreatedTime.text =
-          binding.root.resources.getString(R.string.created_add, story.createdAt);
+          binding.root.resources.getString(R.string.created_add, story.createdAt)
 
         // image OnClickListener
         imgItemImage.setOnClickListener {

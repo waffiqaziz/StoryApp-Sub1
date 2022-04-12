@@ -70,7 +70,6 @@ class AddStoryActivity : AppCompatActivity() {
     binding.btnCameraX.setOnClickListener { startCameraX() }
     binding.btnGallery.setOnClickListener { startGallery() }
     binding.btnUpload.setOnClickListener { uploadImage() }
-    binding.ivRotate.setOnClickListener { rotateImage() }
 
     showLoading()
   }
@@ -93,6 +92,7 @@ class AddStoryActivity : AppCompatActivity() {
 
   override fun onSupportNavigateUp(): Boolean {
     onBackPressed()
+    finish()
     return true
   }
 
@@ -115,12 +115,6 @@ class AddStoryActivity : AppCompatActivity() {
           isBackCamera
         )
     }
-    binding.ivPreview.setImageBitmap(result)
-  }
-
-  private fun rotateImage() {
-    result = rotateBitmap(result!!)
-
     binding.ivPreview.setImageBitmap(result)
   }
 
@@ -174,10 +168,6 @@ class AddStoryActivity : AppCompatActivity() {
         setTitle(getString(R.string.information))
         setMessage(getString(R.string.upload_success))
         setPositiveButton(getString(R.string.continue_)) { _, _ ->
-          val intent = Intent(context, ListStoryActivity::class.java)
-          intent.putExtra(EXTRA_USER, user)
-          intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-          startActivity(intent)
           finish()
         }
         create()

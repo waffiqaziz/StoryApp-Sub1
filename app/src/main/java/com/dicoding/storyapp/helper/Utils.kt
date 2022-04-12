@@ -3,7 +3,6 @@ package com.dicoding.storyapp.helper
 import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
