@@ -13,8 +13,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.dicoding.storyapp.databinding.ActivityCameraBinding
-import com.dicoding.storyapp.helper.createFile
-import com.dicoding.storyapp.helper.showToast
+import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.activity.AddStoryActivity.Companion.CAMERA_X_RESULT
 
 class CameraActivity : AppCompatActivity() {
@@ -45,7 +44,7 @@ class CameraActivity : AppCompatActivity() {
   private fun takePhoto() {
     val imageCapture = imageCapture ?: return
 
-    val photoFile = createFile(application)
+    val photoFile = Helper.createFile(application)
 
     val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
     imageCapture.takePicture(
@@ -53,7 +52,7 @@ class CameraActivity : AppCompatActivity() {
       ContextCompat.getMainExecutor(this),
       object : ImageCapture.OnImageSavedCallback {
         override fun onError(exc: ImageCaptureException) {
-          showToast(this@CameraActivity,"Gagal mengambil gambar.")
+          Helper.showToast(this@CameraActivity,"Gagal mengambil gambar.")
         }
 
         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -91,7 +90,7 @@ class CameraActivity : AppCompatActivity() {
           imageCapture
         )
       } catch (exc: Exception) {
-        showToast(this,"Gagal memunculkan kamera.")
+        Helper.showToast(this,"Gagal memunculkan kamera.")
       }
     }, ContextCompat.getMainExecutor(this))
   }

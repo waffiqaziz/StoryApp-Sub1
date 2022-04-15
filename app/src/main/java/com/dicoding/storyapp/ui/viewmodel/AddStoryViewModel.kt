@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.remote.response.ApiResponse
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
-import com.dicoding.storyapp.helper.ApiCallbackString
+import com.dicoding.storyapp.helper.Helper
 import okhttp3.MultipartBody
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -23,7 +23,7 @@ class AddStoryViewModel : ViewModel() {
     user: UserModel,
     description: String,
     imageMultipart: MultipartBody.Part,
-    callback: ApiCallbackString
+    callback: Helper.ApiCallbackString
   ) {
     _isLoading.value = true
       val service = ApiConfig().getApiService().addStories("Bearer ${user.token}", description, imageMultipart)

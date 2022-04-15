@@ -10,7 +10,9 @@ import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.databinding.ItemListStoryBinding
 import com.dicoding.storyapp.helper.DiffCallback
+import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.activity.DetailStoryActivity
+import java.util.*
 
 class StoryAdapter: RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
 
@@ -38,6 +40,7 @@ class StoryAdapter: RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
 
   inner class ViewHolder(private var binding: ItemListStoryBinding) :
     RecyclerView.ViewHolder(binding.root) {
+
     fun bind(story: ListStoryItem) {
       with(binding) {
         Glide.with(imgItemImage)
@@ -48,7 +51,7 @@ class StoryAdapter: RecyclerView.Adapter<StoryAdapter.ViewHolder>() {
         tvName.text = story.name
         tvDescription.text = story.description
         tvCreatedTime.text =
-          binding.root.resources.getString(R.string.created_add, story.createdAt)
+          binding.root.resources.getString(R.string.created_add, Helper.formatDate(story.createdAt, TimeZone.getDefault().id))
 
         // image OnClickListener
         imgItemImage.setOnClickListener {

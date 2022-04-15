@@ -10,7 +10,9 @@ import com.bumptech.glide.Glide
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.databinding.ActivityDetailStoryBinding
+import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.DetailStoryViewModel
+import java.util.*
 
 class DetailStoryActivity : AppCompatActivity() {
   private lateinit var story: ListStoryItem
@@ -48,10 +50,12 @@ class DetailStoryActivity : AppCompatActivity() {
     return true
   }
 
+  @RequiresApi(Build.VERSION_CODES.O)
   private fun displayResult() {
     with(binding){
       tvName.text = vm.storyItem.name
-      tvCreatedTime.text = getString(R.string.created_add, vm.storyItem.createdAt)
+      tvCreatedTime.text = getString(R.string.created_add, Helper.formatDate(vm.storyItem.createdAt,
+        TimeZone.getDefault().id ))
       tvDescription.text = vm.storyItem.description
 
       Glide.with(ivStory)

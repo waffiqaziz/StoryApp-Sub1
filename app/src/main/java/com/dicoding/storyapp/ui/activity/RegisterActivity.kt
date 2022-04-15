@@ -11,8 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.databinding.ActivityRegisterBinding
-import com.dicoding.storyapp.helper.ApiCallbackString
-import com.dicoding.storyapp.helper.isEmailValid
+import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.RegisterViewModel
 
 class RegisterActivity : AppCompatActivity() {
@@ -66,7 +65,7 @@ class RegisterActivity : AppCompatActivity() {
       binding.etEmail.text.toString().isNotEmpty() &&
           binding.etPass.text.toString().isNotEmpty() &&
           binding.etPass.text.toString().length >= 6 &&
-          isEmailValid(binding.etEmail.text.toString())
+          Helper.isEmailValid(binding.etEmail.text.toString())
   }
 
   private fun buttonListener() {
@@ -75,7 +74,7 @@ class RegisterActivity : AppCompatActivity() {
       val email = binding.etEmail.text.toString()
       val password = binding.etPass.text.toString()
 
-      registerViewModel.register(name, email, password, object : ApiCallbackString {
+      registerViewModel.register(name, email, password, object : Helper.ApiCallbackString {
         override fun onResponse(success: Boolean, message: String) {
           showAlertDialog(success, message)
         }

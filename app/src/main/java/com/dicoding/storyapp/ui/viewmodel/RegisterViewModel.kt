@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.storyapp.data.remote.response.ApiResponse
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
-import com.dicoding.storyapp.helper.ApiCallbackString
+import com.dicoding.storyapp.helper.Helper
 import org.json.JSONObject
 import org.json.JSONTokener
 import retrofit2.Call
@@ -19,7 +19,7 @@ class RegisterViewModel : ViewModel() {
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
 
-  fun register(name: String, email: String, pass: String, callback: ApiCallbackString){
+  fun register(name: String, email: String, pass: String, callback: Helper.ApiCallbackString){
     _isLoading.value = true
 
     val service = ApiConfig().getApiService().register(name, email, pass)

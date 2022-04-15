@@ -17,8 +17,7 @@ import com.dicoding.storyapp.MainActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.databinding.ActivitySigninBinding
-import com.dicoding.storyapp.helper.ApiCallbackString
-import com.dicoding.storyapp.helper.isEmailValid
+import com.dicoding.storyapp.helper.Helper
 import com.dicoding.storyapp.ui.viewmodel.SignInViewModel
 import com.dicoding.storyapp.ui.viewmodel.ViewModelFactory
 
@@ -83,7 +82,7 @@ class SignInActivity : AppCompatActivity() {
 
     binding.btnSignIn.isEnabled = resultPass != null && resultEmail != null &&
         binding.etPass.text.toString().length >= 6 &&
-        isEmailValid(binding.etEmail.text.toString())
+        Helper.isEmailValid(binding.etEmail.text.toString())
   }
 
   private fun showAlertDialog(param: Boolean, message: String) {
@@ -119,7 +118,7 @@ class SignInActivity : AppCompatActivity() {
       val email = binding.etEmail.text.toString()
       val pass = binding.etPass.text.toString()
 
-      signInViewModel.login(email, pass, object : ApiCallbackString {
+      signInViewModel.login(email, pass, object : Helper.ApiCallbackString {
         override fun onResponse(success: Boolean,message: String) {
           showAlertDialog(success, message)
         }

@@ -39,9 +39,7 @@ class ListStoryActivity : AppCompatActivity() {
 
     showSnackBar()
 
-    binding?.rvStory?.layoutManager = LinearLayoutManager(this)
-    binding?.rvStory?.setHasFixedSize(true)
-    binding?.rvStory?.adapter = adapter
+    setupRecycleView()
 
     showLoading()
     showHaveDataOrNot()
@@ -70,6 +68,12 @@ class ListStoryActivity : AppCompatActivity() {
     }
   }
 
+  private fun setupRecycleView(){
+    binding?.rvStory?.layoutManager = LinearLayoutManager(this)
+    binding?.rvStory?.setHasFixedSize(true)
+    binding?.rvStory?.adapter = adapter
+  }
+
   private fun showLoading() {
     viewModel.isLoading.observe(this) {
       binding?.apply {
@@ -88,8 +92,10 @@ class ListStoryActivity : AppCompatActivity() {
     viewModel.isHaveData.observe(this){
       binding?.apply {
         if (it) {
+          rvStory.visibility = View.VISIBLE
           tvInfo.visibility = View.GONE
         } else {
+          rvStory.visibility = View.GONE
           tvInfo.visibility = View.VISIBLE
         }
       }

@@ -110,7 +110,7 @@ class AddStoryActivity : AppCompatActivity() {
 
       getFile = myFile
       result =
-        rotateBitmap(
+        Helper.rotateBitmap(
           BitmapFactory.decodeFile(getFile?.path),
           isBackCamera
         )
@@ -131,7 +131,7 @@ class AddStoryActivity : AppCompatActivity() {
   ) {
     if (it.resultCode == RESULT_OK) {
       val selectedImg: Uri = it.data?.data as Uri
-      val myFile = uriToFile(selectedImg, this@AddStoryActivity)
+      val myFile = Helper.uriToFile(selectedImg, this@AddStoryActivity)
       getFile = myFile
       binding.ivPreview.setImageURI(selectedImg)
     }
@@ -140,7 +140,7 @@ class AddStoryActivity : AppCompatActivity() {
   private fun uploadImage() {
 
     if (getFile != null) {
-      val file = reduceFileImage(getFile as File)
+      val file = Helper.reduceFileImage(getFile as File)
 
       val description = binding.etDescription.text.toString()
       val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -151,14 +151,14 @@ class AddStoryActivity : AppCompatActivity() {
       )
 
       // upload image
-      viewModel.uploadImage(user, description, imageMultipart, object : ApiCallbackString {
+      viewModel.uploadImage(user, description, imageMultipart, object : Helper.ApiCallbackString {
         override fun onResponse(success: Boolean, message: String) {
           showAlertDialog(success, message)
         }
       })
 
     } else {
-      showToast(this@AddStoryActivity, getString(R.string.no_attach_file))
+      Helper.showToast(this@AddStoryActivity, getString(R.string.no_attach_file))
     }
   }
 
@@ -168,8 +168,9 @@ class AddStoryActivity : AppCompatActivity() {
         setTitle(getString(R.string.information))
         setMessage(getString(R.string.upload_success))
         setPositiveButton(getString(R.string.continue_)) { _, _ ->
-          finish()
+          // Do nothing
         }
+        finish()
         create()
         show()
       }

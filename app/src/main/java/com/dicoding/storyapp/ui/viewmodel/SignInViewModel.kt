@@ -9,7 +9,7 @@ import com.dicoding.storyapp.data.model.UserModel
 import com.dicoding.storyapp.data.model.UserPreference
 import com.dicoding.storyapp.data.remote.response.LoginResponse
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
-import com.dicoding.storyapp.helper.ApiCallbackString
+import com.dicoding.storyapp.helper.Helper
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -23,7 +23,7 @@ class SignInViewModel(private val pref: UserPreference) : ViewModel() {
   val isLoading: LiveData<Boolean> = _isLoading
 
 
-  fun login(email: String, pass: String, callback: ApiCallbackString){
+  fun login(email: String, pass: String, callback: Helper.ApiCallbackString){
     _isLoading.value = true
 
     val service = ApiConfig().getApiService().login(email, pass)
